@@ -147,3 +147,36 @@ public class SigFig {
             return output;
         }
     }
+    
+    public String round(double n, int y) {
+        final char[] x = String.valueOf(n).toCharArray();
+        final Integer[] repos = reposition(new String(x));
+        final int i = findIn(y, repos);
+        final int d = findIn('.', x);
+        if (i == x.length - 1) {
+            return new String(x);
+        } else if (i == -1 && y < 0) {
+            final int x1 = x.length + Math.abs(y - repos[repos.length - 1]);
+            char[] output = Arrays.copyOf(x, x1);
+            for (int j = 0; j < x1 - x.length; j++) {
+                output[output.length - 1 - j] = '0';
+            }
+            return new String(output);
+        } else {
+            char[] output;
+            if (i > d) {
+                output = Arrays.copyOf(x, i + 1);
+            }else{
+                output = Arrays.copyOf(x, d);
+            }
+            if(i+1 != d){
+                if((int) x[i+1] - '0' >= 5) output[i] = (char) ((int) x[i] + 1);
+                for(int j = i + 1; j < output.length; j++){
+                    output[j] = '0';
+                }
+            }else{
+                if((int) x[i+2] - '0' >= 5) output[i] = (char) ((int) x[i] + 1);
+            }
+            return new String(output);
+        }
+    }
